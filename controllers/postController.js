@@ -66,7 +66,7 @@ export const remove = async (req, res) => {
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({
-			message: "Failed to get posts",
+			message: "Failed to delete posts",
 		});
 	}
 };
@@ -85,6 +85,29 @@ export const create = async (req, res) => {
 		console.log(err);
 		res.status(500).json({
 			message: "Failed to create post",
+		});
+	}
+};
+
+export const update = (req, res) => {
+	try {
+		const postId = req.params.id;
+		PostModel.updateOne(
+			{ _id: postId },
+			{
+				title: req.body.title,
+				text: req.body.text,
+				imageUrl: req.body.imageUrl,
+				user: req.userId,
+			},
+		);
+		res.json({
+			success: true,
+		});
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({
+			message: "Failed to update post",
 		});
 	}
 };
