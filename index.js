@@ -12,9 +12,12 @@ import { checkAuth, handleValidationErrors } from "./utils/index.js";
 
 import { UserController, PostController } from "./controllers/index.js";
 
+const username = encodeURIComponent("login");
+const password = encodeURIComponent("password");
+
 mongoose
 	.connect(
-		"mongodb+srv://lu4ichka:wwwwww@cluster0.wvfqjep.mongodb.net/blog?retryWrites=true&w=majority",
+		`mongodb+srv://${username}:${password}@cluster0.wvfqjep.mongodb.net/blog?retryWrites=true&w=majority`,
 	)
 	.then(() => {
 		console.log("Connect DB OK");
@@ -65,6 +68,7 @@ app.post("/upload", checkAuth, upload.single("image"), (req, res) => {
 });
 
 app.get("/posts", PostController.getAll);
+app.get("/posts/tags", PostController.getLastTags);
 app.get("/posts/:id", PostController.getOne);
 app.post(
 	"/posts",
