@@ -30,28 +30,28 @@ export const getLastTags = async (req, res) => {
 export const getOne = async (req, res) => {
 	try {
 		const postId = req.params.id;
-		PostModel.findOneAndUpdate(
+		const doc = await PostModel.findOneAndUpdate(
 			{ _id: postId },
 			{ $inc: { viewsCount: 1 } },
 			{ returnDocument: "after" },
-			(err, doc) => {
+			/*(err, doc) => {
 				if (err) {
 					return res.status(500).json({
 						message: "Failed to return post",
 					});
-					if (!doc) {
-						return res.status(404).json({
-							message: "Failed to find post",
-						});
-					}
-					res.json(doc);
 				}
-			},
+			},*/
 		);
+		if (!doc) {
+			return res.status(404).json({
+				message: "Failed to find post",
+			});
+		}
+		res.json(doc);
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({
-			message: "Failed to get posts",
+			message: "Failed to get post",
 		});
 	}
 };
@@ -59,26 +59,26 @@ export const getOne = async (req, res) => {
 export const remove = async (req, res) => {
 	try {
 		const postId = req.params.id;
-		PostModel.findOneAndDelete(
+		const doc = await PostModel.findOneAndDelete(
 			{
 				_id: postId,
 			},
-			(err, doc) => {
+			/*(err, doc) => {
 				if (err) {
 					return res.status(500).json({
 						message: "Failed to delete post",
 					});
 				}
-				if (!doc) {
-					return res.status(404).json({
-						message: "Failed to find post",
-					});
-				}
-				res.json({
-					success: true,
-				});
-			},
+			},*/
 		);
+		if (!doc) {
+			return res.status(404).json({
+				message: "Failed to find post",
+			});
+		}
+		res.json({
+			success: true,
+		});
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({
