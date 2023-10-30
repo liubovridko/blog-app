@@ -28,7 +28,7 @@ export const login = async (req, res) => {
 				expiresIn: "30d",
 			},
 		);
-		const { passwordHash, userData } = user._doc;
+		const { passwordHash, ...userData } = user._doc;
 		res.json({ ...userData, token });
 	} catch (err) {
 		console.log(err);
@@ -69,7 +69,7 @@ export const getMe = async (req, res) => {
 				message: "User not found",
 			});
 		}
-		const { passwordHash, userData } = user._doc;
+		const { passwordHash, ...userData } = user._doc;
 		res.json(userData);
 	} catch (err) {
 		console.log(err);
