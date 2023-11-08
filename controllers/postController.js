@@ -1,12 +1,30 @@
 import PostModel from "../models/Post.js";
 export const getAll = async (req, res) => {
 	try {
-		const posts = await PostModel.find().populate("user").exec();
+		const posts = await PostModel.find()
+			.populate("user")
+			.sort({ createdAt: -1 })
+			.exec(); // Sort by date in descending order (newest first)
 		res.json(posts);
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({
 			message: "Failed to get posts",
+		});
+	}
+};
+
+export const getAllSortedByViews = async (req, res) => {
+	try {
+		const posts = await PostModel.find()
+			.populate("user")
+			.sort({ viewsCount: -1 })
+			.exec(); // Sort by views in descending order (highest views first)
+		res.json(posts);
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({
+			message: "Failed to get posts sorted by popular",
 		});
 	}
 };
@@ -41,7 +59,7 @@ export const getOne = async (req, res) => {
 					});
 				}
 			},*/
-		);
+		).populate("user");
 		if (!doc) {
 			return res.status(404).json({
 				message: "Failed to find post",
@@ -92,7 +110,7 @@ export const create = async (req, res) => {
 		const doc = new PostModel({
 			title: req.body.title,
 			text: req.body.text,
-			tags: req.body.tags,
+			tags: req.body.tags.split(","),
 			imageUrl: req.body.imageUrl,
 			user: req.userId,
 		});
@@ -106,14 +124,15 @@ export const create = async (req, res) => {
 	}
 };
 
-export const update = (req, res) => {
+export const update = async (req, res) => {
 	try {
 		const postId = req.params.id;
-		PostModel.updateOne(
+		await PostModel.updateOne(
 			{ _id: postId },
 			{
 				title: req.body.title,
 				text: req.body.text,
+				tags: req.body.tags.split(","),
 				imageUrl: req.body.imageUrl,
 				user: req.userId,
 			},
