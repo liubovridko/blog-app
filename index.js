@@ -10,7 +10,11 @@ import {
 } from "./validations/validations.js";
 import { checkAuth, handleValidationErrors } from "./utils/index.js";
 
-import { UserController, PostController } from "./controllers/index.js";
+import {
+	UserController,
+	PostController,
+	CommentController,
+} from "./controllers/index.js";
 
 const username = encodeURIComponent("username");
 const password = encodeURIComponent("password");
@@ -87,6 +91,9 @@ app.patch(
 	handleValidationErrors,
 	PostController.update,
 );
+
+app.post("/posts/:id/comments", checkAuth, CommentController.addComment);
+app.get("/posts/:id/comments", CommentController.getCommentsByPostId);
 
 app.listen(4444, (err) => {
 	if (err) {

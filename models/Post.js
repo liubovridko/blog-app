@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Comment from "./Comment.js";
 
 const PostSchema = new mongoose.Schema(
 	{
@@ -26,7 +27,14 @@ const PostSchema = new mongoose.Schema(
 		},
 
 		imageUrl: String,
+		comments: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Comment",
+			},
+		],
 	},
+
 	{
 		timestamps: true,
 	},
