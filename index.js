@@ -94,6 +94,7 @@ app.patch(
 
 app.post("/posts/:id/comments", checkAuth, CommentController.addComment);
 app.get("/posts/:id/comments", CommentController.getCommentsByPostId);
+app.get("/comments", CommentController.getLastComments);
 
 app.listen(4444, (err) => {
 	if (err) {
