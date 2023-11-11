@@ -1,3 +1,3 @@
 export * as UserController from "./UserController.js";
 export * as PostController from "./PostController.js";
-import * as CommentController from "./CommentController.js";
+export * as CommentController from "./CommentController.js";
